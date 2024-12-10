@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Connexion, Inscription et Récupération de Mot de Passe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f7f8fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 350px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 500;
+            font-size: 24px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #666;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 14px;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f7f7f7;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+            border: 1px solid #007bff;
+            background-color: #fff;
+            box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.1);
+            outline: none;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+            margin-top: 12px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .toggle-btn {
+            background-color: transparent;
+            color: #007bff;
+            padding: 12px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #007bff;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .toggle-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .forgot-password a {
+            color: #007bff;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Formulaire de connexion -->
+        <div id="login-form" class="form-container" style="display: block;">
+            <h2>Connexion</h2>
+            <form>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Votre Email" required>
+
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+
+                <input type="submit" value="Se connecter">
+            </form>
+            <div class="forgot-password">
+                <a href="#" onclick="showForgotPassword()">Mot de passe oublié ?</a>
+            </div>
+            <div class="toggle-btn" onclick="toggleForm('signup')">Créer un compte</div>
+        </div>
+
+        <!-- Formulaire d'inscription -->
+        <div id="signup-form" class="form-container">
+            <h2>Inscription</h2>
+            <form>
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" id="username" name="username" placeholder="Votre nom d'utilisateur" required>
+
+                <label for="email-signup">Email</label>
+                <input type="email" id="email-signup" name="email-signup" placeholder="Votre Email" required>
+
+                <label for="password-signup">Mot de passe</label>
+                <input type="password" id="password-signup" name="password-signup" placeholder="Votre mot de passe" required>
+
+                <input type="submit" value="S'inscrire">
+            </form>
+            <div class="toggle-btn" onclick="toggleForm('login')">Vous avez déjà un compte ? Se connecter</div>
+        </div>
+
+        <!-- Formulaire de récupération de mot de passe -->
+        <div id="forgot-password-form" class="form-container">
+            <h2>Récupération de Mot de Passe</h2>
+            <form>
+                <label for="email-reset">Entrez votre email</label>
+                <input type="email" id="email-reset" name="email-reset" placeholder="Votre Email" required>
+
+                <input type="submit" value="Envoyer un lien de réinitialisation">
+            </form>
+            <div class="toggle-btn" onclick="backToLogin()">Retour à la connexion</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm(formType) {
+            var loginForm = document.getElementById('login-form');
+            var signupForm = document.getElementById('signup-form');
+            var forgotPasswordForm = document.getElementById('forgot-password-form');
+
+            if (formType === 'signup') {
+                loginForm.style.display = "none";
+                signupForm.style.display = "block";
+                forgotPasswordForm.style.display = "none";
+            } else if (formType === 'login') {
+                loginForm.style.display = "block";
+                signupForm.style.display = "none";
+                forgotPasswordForm.style.display = "none";
+            }
+        }
+
+        function showForgotPassword() {
+            var loginForm = document.getElementById('login-form');
+            var forgotPasswordForm = document.getElementById('forgot-password-form');
+
+            loginForm.style.display = "none";
+            forgotPasswordForm.style.display = "block";
+        }
+
+        function backToLogin() {
+            var loginForm = document.getElementById('login-form');
+            var forgotPasswordForm = document.getElementById('forgot-password-form');
+
+            forgotPasswordForm.style.display = "none";
+            loginForm.style.display = "block";
+        }
+    </script>
+</body>
+</html>
